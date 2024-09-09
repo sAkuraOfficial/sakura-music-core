@@ -87,7 +87,7 @@ router.get('/getBanner', async (req, res) => {
                 }
             }
         )
-
+        res.json(banners);
 
     } catch (error) {
         console.error('Error fetching data from external API:', error);
