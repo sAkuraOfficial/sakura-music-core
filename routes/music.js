@@ -79,7 +79,7 @@ router.get('/getBanner', async (req, res) => {
     try {
         const response = await axios.get(`http://114.132.98.222:3000/banner`);
         const data = response.data;
-        let banners = data.banners.filter(banner => banner.targetType === 3000)
+        let banners = data.banners.filter(banner => banner.targetType !== 3000)
         banners = banners.map(
             banner => {
                 return {
@@ -87,7 +87,7 @@ router.get('/getBanner', async (req, res) => {
                 }
             }
         )
-
+        res.json(banners);
 
     } catch (error) {
         console.error('Error fetching data from external API:', error);
