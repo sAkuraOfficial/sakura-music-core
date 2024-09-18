@@ -35,7 +35,7 @@ router.get('/search', async (req, res) => {
     console.log(`Received request for /search with keywords: ${keywords}`);
 
     try {
-        const response = await axiosInstance.get(`http://114.132.98.222:3000/search?keywords=${encodeURIComponent(keywords)}`);
+        const response = await axiosInstance.get(`http://127.0.0.1:3000/search?keywords=${encodeURIComponent(keywords)}`);
         const data = response.data;
 
         if (!data.result || !data.result.songs) {
@@ -43,9 +43,9 @@ router.get('/search', async (req, res) => {
         }
 
         const songIds = data.result.songs.map(song => song.id);
-        const limit = pLimit(5); // 限制并发数量为 5
+        const limit = pLimit(15); // 限制并发数量为 5
 
-        const imgPromises = songIds.map(id => limit(() => axiosInstance.get(`http://114.132.98.222:3000/song/detail?ids=${encodeURIComponent(id)}`)
+        const imgPromises = songIds.map(id => limit(() => axiosInstance.get(`http://127.0.0.1:3000/song/detail?ids=${encodeURIComponent(id)}`)
             .then(res => res.data.songs[0]?.al.picUrl || null)
             .catch(() => null)
         ));
@@ -80,7 +80,7 @@ router.get('/getMusicImg', async (req, res) => {
     console.log(`Received request for /getMusicImg with ID: ${music_id}`);
 
     try {
-        const response = await axiosInstance.get(`http://114.132.98.222:3000/song/detail?ids=${encodeURIComponent(music_id)}`);
+        const response = await axiosInstance.get(`http://127.0.0.1:3000/song/detail?ids=${encodeURIComponent(music_id)}`);
         const data = response.data;
 
         if (!data.songs || !data.songs.length) {
@@ -100,7 +100,7 @@ router.get('/getBanner', async (req, res) => {
     console.log('Received request for /getBanner');
 
     try {
-        const response = await axiosInstance.get(`http://114.132.98.222:3000/banner`);
+        const response = await axiosInstance.get(`http://127.0.0.1:3000/banner`);
         const data = response.data;
 
         if (!data.banners || !Array.isArray(data.banners)) {
@@ -130,7 +130,7 @@ router.get('/personalized', async (req, res) => {
     console.log(`Received request for /personalized with limit: ${limit}`);
 
     try {
-        const response = await axiosInstance.get(`http://114.132.98.222:3000/personalized?limit=${encodeURIComponent(limit)}`);
+        const response = await axiosInstance.get(`http://127.0.0.1:3000/personalized?limit=${encodeURIComponent(limit)}`);
         const data = response.data;
 
         if (!data.result) {
